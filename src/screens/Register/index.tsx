@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { 
     Alert, 
     Keyboard, 
@@ -49,9 +49,7 @@ const schema = Yup.object().shape({
 export function Register() {
     const [transactionType, setTransactionType] = useState('');
     const [categoryModalOpen, setCategoryModalOpen] = useState(false);
-
     const dataKey = '@gofinance:transactions';
-
     const [category, setCategory] = useState({
         key: 'category',
         name: 'Categoria',
@@ -68,7 +66,7 @@ export function Register() {
         resolver: yupResolver(schema)
     });
 
-    function handleTansactionType(type: 'up' | 'down') {
+    function handleTansactionType(type: 'positive' | 'negative') {
         setTransactionType(type);
     }
 
@@ -93,12 +91,13 @@ export function Register() {
             id: String(uuid.v4()),
             name: form.name,
             amount: form.amount,
-            transactionType,
+            type: transactionType,
             category: category.key,
-            data: new Date()
+            date: new Date()
         }
 
         try {
+            
             const data = await AsyncStorage.getItem(dataKey);
             const currentData = data ? JSON.parse(data) : [];
 
@@ -155,13 +154,13 @@ export function Register() {
                             <TransactionTypeButton
                                 title="Income"
                                 type="up"
-                                onPress={() => handleTansactionType('up')}
+                                onPress={() => handleTansactionType('positive')}
                                 isActive={transactionType === 'up'}
                             />
                             <TransactionTypeButton
                                 title="Outcome"
                                 type="down"
-                                onPress={() => handleTansactionType('down')}
+                                onPress={() => handleTansactionType('negative')}
                                 isActive={transactionType === 'down'}
                             />
                         </TransactionsType>
