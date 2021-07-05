@@ -65,7 +65,7 @@ export function SignIn() {
                     </SignInTitle>
                 </TitleWrapper>
             </Header>
-
+        
             <Footer>
                 <FooterWrapper>
                     <SignInSocialButton
