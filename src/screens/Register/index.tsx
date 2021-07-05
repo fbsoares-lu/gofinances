@@ -14,6 +14,7 @@ import uuid from 'react-native-uuid';
 
 import { useNavigation } from '@react-navigation/native';
 import { useForm } from 'react-hook-form';
+import { useAuth } from '../../hooks/auth';
 
 import { InputForm } from '../../components/Form/InputForm';
 import { Button } from '../../components/Form/Button';
@@ -30,6 +31,7 @@ import {
     Fields,
     TransactionsType
 } from './styles';
+
 
 interface FormData {
     name: string;
@@ -48,9 +50,10 @@ const schema = Yup.object().shape({
 });
 
 export function Register() {
+    const { user } = useAuth();
     const [transactionType, setTransactionType] = useState('');
     const [categoryModalOpen, setCategoryModalOpen] = useState(false);
-    const dataKey = '@gofinance:transactions';
+    const dataKey = `@gofinance:transactions_user:${user.id}`;
     const [category, setCategory] = useState({
         key: 'category',
         name: 'Categoria',
